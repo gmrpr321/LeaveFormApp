@@ -6,7 +6,10 @@
 #     UserEditView,
 # )
 
-from django.urls import path
+from django.urls import path 
+
+
+
 
 urlpatterns = [
     # path('StudentLeaveForm/',StudentFormView.as_view(),name="StudentFormView"),
