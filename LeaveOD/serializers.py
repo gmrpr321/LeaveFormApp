@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from .models import User, Form
+from .models import AppUser,Form
 
 
-class UserSerializer(serializers.Serializer):
+class AppUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = AppUser
         fields = "__all__"
 
 
-class FormSerializer(serializers.Serializer):
+class FormSerializer(serializers.ModelSerializer):
     class Meta:
         model = Form
         fields = "__all__"

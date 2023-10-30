@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-6-tg)y1=1%h3(vms(4hi@7h5y3cs$@i8fr6#e04miarzr+a(sv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,9 +44,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -54,19 +53,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False  # Set this to True if you want to allow all origins
-CORS_ALLOW_CREDENTIALS = (
-    True  # Set this to True if your frontend sends credentials (e.g., cookies)
-)
-CORS_ALLOWED_ORIGINS = [
-    # Add the domains or origins that you want to allow
-    "http://localhost:3000",  # Example: Allow your local development server
-    "https://yourfrontenddomain.com",
-]
-AUTH_USER_MODEL = "LeaveOD.User"
-
 ROOT_URLCONF = "Attendance.urls"
+CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
+
+# AUTH_USER_MODEL = 'LeaveOD.User'
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -119,8 +115,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
+        # 'rest_framework.authentication.TokenAuthentication',
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 # Internationalization
