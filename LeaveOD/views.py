@@ -28,6 +28,7 @@ class LoginUser(APIView):
         user = authenticate(request, username=username, password=password)
         # corresponding appuser object
         appuser = AppUser.objects.get(user=user)
+        print(user)
         if user is not None:
             # If authentication is successful, log in the user
             login(request, user)
@@ -212,6 +213,10 @@ class RetriveStudentFormByID(APIView):
 
 # creation of the application form to apply leave or onduty on the portal
 class StudentCreateForm(CreateAPIView):
+    # def post(self,request):
+    #     serialier = FormSerializer(data=request.data)
+    #     serialier.is_valid()
+    #     print(serialier.errors)
     serializer_class = FormSerializer
     queryset = Form.objects.all()
 
@@ -233,24 +238,27 @@ class ValidateForm(APIView):
     form_id : string,
     position : string enum{'class_Incharge','HoD','mentor'}
     is_parent_validate : bool
+    is_staff_validate : bool
     } 
     """
     
     def post(self,request):
         # find the corresponding form object
         data = request.data
-        form_object = Form.objects.get(id=data['id'])
+        print(data)
+        form_object = Form.objects.get(id=data.get('id'))
         if(form_object):
             # mark the position consent as true
             if(data['position']=='class_Incharge'):
-                form_object.is_staff_consent = True
+                form_object.is_staff_consent = data.get('is_staff_validate')
             elif(data['position']=='HoD'):
-                form_object.is_HOD_consent = True
+                form_object.is_HOD_consent = data.get('is_staff_validate')
             elif(data['position']=='mentor'):
-                form_object.is_HOD_consent = True
+                form_object.is_staff_consent = data.get('is_staff_validate')
             # check for parent consent
-            if(data['is_parent_validate']):
-                form_object.is_parent_consent = True
+            form_object.is_parent_consent = data.get('is_parent_validate')
+            print(data)
+            print(form_object.is_parent_consent,form_object.is_staff_consent,form_object.is_HOD_consent)
             form_object.save()
             return Response({"data" : "Saved_Successfully"},status=status.HTTP_200_OK)
         return Response({"data" : "Invalid Form ID"},status=status.HTTP_400_BAD_REQUEST)
